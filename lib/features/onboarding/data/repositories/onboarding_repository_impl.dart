@@ -14,6 +14,6 @@ class OnboardingRepositoryImpl implements OnboardingRepository {
   }
 
   @override
-  Future<void> savePreferences(List<int> selectedIds) {
+  Future<String> savePreferences(List<int> selectedIds) {
     return remoteDataSource.savePreferences(selectedIds);
 }}

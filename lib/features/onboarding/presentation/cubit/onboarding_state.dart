@@ -15,7 +15,7 @@ class OnboardingLoaded extends OnboardingState {
     required this.selectedIds,
   });
 }
-
+class OnboardingSuccess extends OnboardingState {}
 class OnboardingError extends OnboardingState {
   final String message;
 

@@ -1,3 +1,4 @@
+import '../../../daily_challenge/presentation/pages/daily_challenge_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../cubit/onboarding_cubit.dart';
@@ -13,7 +14,17 @@ class OnboardingPage extends StatelessWidget {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20),
-          child: BlocBuilder<OnboardingCubit, OnboardingState>(
+          child: BlocListener<OnboardingCubit, OnboardingState>(
+            listener: (context, state) {
+              if (state is OnboardingSuccess) {
+                Navigator.of(context).pushAndRemoveUntil(
+                  
+                  MaterialPageRoute(builder: (_) => const DailyChallengePage()),
+                  (route) => false,
+                );
+              }
+            },
+            child: BlocBuilder<OnboardingCubit, OnboardingState>(
             builder: (context, state) {
 
               // 🔵 Loading State
@@ -127,8 +138,8 @@ class OnboardingPage extends StatelessWidget {
               return const SizedBox();
             },
           ),
-        ),
+        ),),
       ),
-    );
+    );      
   }
 }

@@ -3,7 +3,7 @@ import "../models/category_model.dart";
 
 abstract class OnboardingRemoteDataSource{
   Future<List<CategoryModel>> getCategories();
-  Future<void> savePreferences(List<int> ids);
+  Future<String> savePreferences(List<int> ids);
 }
 
 class OnboardingRemoteDataSourceImpl implements OnboardingRemoteDataSource{
@@ -20,9 +20,14 @@ class OnboardingRemoteDataSourceImpl implements OnboardingRemoteDataSource{
   }
 
  @override
-  Future<void> savePreferences(List<int> ids) async {
-    await dio.post("/preferences", data: {
-      "selected_ids": ids,
-    });
+  Future<String> savePreferences(List<int> ids) async {
+   final response = await dio.post(
+  "/preferences",
+  data: {
+    "category_ids": ids,
+  },
+);
+
+return response.data["user_id"];
   }
 }

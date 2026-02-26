@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../domain/usecases/get_categories.dart';
 import '../../domain/usecases/save_preferences.dart';
 import 'onboarding_state.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OnboardingCubit extends Cubit<OnboardingState> {
   final GetCategories getCategories;
@@ -47,8 +48,22 @@ class OnboardingCubit extends Cubit<OnboardingState> {
       ));
     }
   }
+Future<void> submit() async {
+  if (state is OnboardingLoaded) {
+    final currentState = state as OnboardingLoaded;
 
-  void submit() async {
-    await savePreferences(selectedIds);
+    emit(OnboardingLoading());
+
+    try {
+      final userId =
+          await savePreferences(currentState.selectedIds);
+
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString("user_id", userId);
+
+      emit(OnboardingSuccess()); // 🔥 important
+    } catch (e) {
+      emit(OnboardingError(e.toString()));
+    }
   }
-}
+}}
