@@ -93,6 +93,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../cubit/challenge_cubit.dart';
 import '../cubit/challenge_state.dart';
 
+
 class DailyChallengePage extends StatefulWidget {
   const DailyChallengePage({super.key});
 
@@ -182,18 +183,8 @@ class _DailyChallengePageState extends State<DailyChallengePage> {
           return const SizedBox();
         },
       ),
-      bottomNavigationBar:  BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: "Home",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.history),
-            label: "History",
-          ),
-        ],
-      ),
+     
     );
   }
 }
+

@@ -67,9 +67,10 @@ import 'features/history/presentation/cubit/history_cubit.dart';
 void main() {
   final dio = Dio(
     BaseOptions(
-      baseUrl: "http://localhost:3000",
-      connectTimeout: const Duration(seconds: 10),
-      receiveTimeout: const Duration(seconds: 10),
+      // baseUrl: "http://localhost:3000",
+      baseUrl: "http://10.0.2.2:3000",
+      connectTimeout: const Duration(seconds: 500),
+      receiveTimeout: const Duration(seconds: 500),
     ),
   );
 

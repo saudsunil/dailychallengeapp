@@ -83,7 +83,8 @@ class _HistoryPageState extends State<HistoryPage> {
                               ),
                             ),
                             Text(
-                              "${item.category} • ${item.week} • ${item.month}",
+                          "${item.categoryEmoji} ${item.categoryName} • "
+                          "${item.date.day}/${item.date.month}",
                               style: const TextStyle(
                                 color: Colors.grey,
                                 fontSize: 12,

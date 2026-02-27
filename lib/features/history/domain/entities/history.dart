@@ -1,16 +1,17 @@
 class History {
-  final int id;
   final String title;
-  final String category;    
+  final String categoryName;
+  final String categoryEmoji;
   final bool completed;
-  final String week;
-  final String month;
+  final DateTime date;
+  
   History({
-    required this.id,
+   
     required this.title,
-    required this.category,
+    required this.categoryName,
+    required this.categoryEmoji,
     required this.completed,
-    required this.week,
-    required this.month,
+    required this.date,
+
   });
 }
