@@ -58,6 +58,12 @@ import 'features/daily_challenge/domain/usecases/get_streak.dart';
 import 'features/daily_challenge/domain/usecases/complete_challenge.dart';
 import 'features/daily_challenge/presentation/cubit/challenge_cubit.dart';
 
+
+import 'features/history/data/datasources/history_remote_datasource.dart';
+import 'features/history/data/repositories/history_repository_impl.dart';   
+import 'features/history/domain/usecases/get_history.dart';
+import 'features/history/presentation/cubit/history_cubit.dart';
+
 void main() {
   final dio = Dio(
     BaseOptions(
@@ -93,12 +99,23 @@ void main() {
   final completeChallenge =
       CompleteChallenge(challengeRepository);
 
+  // 🟢 History Dependencies
+final historyRemote =
+    HistoryRemoteDataSourceImpl(dio);
+
+final historyRepository =
+    HistoryRepositoryImpl(historyRemote);
+
+final getHistory =
+    GetHistory(historyRepository);
+
   runApp(MyApp(
     getCategories: getCategories,
     savePreferences: savePreferences,
     getTodayChallenge: getTodayChallenge,
     getStreak: getStreak,
     completeChallenge: completeChallenge,
+    getHistory: getHistory,
   ));
 }
 
@@ -108,6 +125,7 @@ class MyApp extends StatelessWidget {
   final GetTodayChallenge getTodayChallenge;
   final GetStreak getStreak;
   final CompleteChallenge completeChallenge;
+  final GetHistory getHistory;
 
   const MyApp({
     super.key,
@@ -116,6 +134,7 @@ class MyApp extends StatelessWidget {
     required this.getTodayChallenge,
     required this.getStreak,
     required this.completeChallenge,
+    required this.getHistory,
   });
 
   @override
@@ -133,6 +152,11 @@ class MyApp extends StatelessWidget {
             getTodayChallenge,
             getStreak,
             completeChallenge,
+          ),
+        ),
+        BlocProvider(
+          create: (_) => HistoryCubit(
+            getHistory,
           ),
         ),
       ],
