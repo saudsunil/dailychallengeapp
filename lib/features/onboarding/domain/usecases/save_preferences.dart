@@ -5,7 +5,7 @@ class SavePreferences {
 
   SavePreferences(this.repository);
 
-  Future<void> call(List<int> ids) async {
+  Future<String> call(List<int> ids) async {
     return await repository.savePreferences(ids);
   }
 }

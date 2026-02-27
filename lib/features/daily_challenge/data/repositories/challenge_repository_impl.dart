@@ -6,7 +6,7 @@ import '../../domain/entities/challenge.dart';
 import '../../domain/entities/streak.dart';
 
 class ChallengeRepositoryImpl implements ChallengeRepository {
-  final ChallengeRemoteDataSource remote;
+  final ChallengeRemoteDataSourceImpl remote;
 
   ChallengeRepositoryImpl(this.remote);
 
@@ -17,6 +17,7 @@ class ChallengeRepositoryImpl implements ChallengeRepository {
   }
 
   @override
+
   Future<Streak> getStreak(String userId) async {
     final data = await remote.getStreak(userId);
     return StreakModel.fromJson(data);

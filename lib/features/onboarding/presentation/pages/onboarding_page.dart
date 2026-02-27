@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../cubit/onboarding_cubit.dart';
 import '../cubit/onboarding_state.dart';
+import '../../../daily_challenge/presentation/cubit/challenge_cubit.dart';  
 
 class OnboardingPage extends StatelessWidget {
   const OnboardingPage({super.key});
@@ -17,11 +18,15 @@ class OnboardingPage extends StatelessWidget {
           child: BlocListener<OnboardingCubit, OnboardingState>(
             listener: (context, state) {
               if (state is OnboardingSuccess) {
-                Navigator.of(context).pushAndRemoveUntil(
-                  
-                  MaterialPageRoute(builder: (_) => const DailyChallengePage()),
-                  (route) => false,
-                );
+               Navigator.pushReplacement(
+  context,
+  MaterialPageRoute(
+    builder: (context) => BlocProvider.value(
+      value: context.read<ChallengeCubit>(),
+      child: const DailyChallengePage(),
+    ),
+  ),
+);
               }
             },
             child: BlocBuilder<OnboardingCubit, OnboardingState>(
