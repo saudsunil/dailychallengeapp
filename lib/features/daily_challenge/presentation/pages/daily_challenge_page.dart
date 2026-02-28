@@ -121,8 +121,24 @@ class _DailyChallengePageState extends State<DailyChallengePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 231, 242, 253),
       appBar: AppBar(
-        title: const Text("Daily Challenge"),
+        title: Padding(
+          padding:const EdgeInsets.only(left: 9, top:10,),
+          child: Row(
+          children: const[
+            Icon(Icons.wb_sunny, color:Color.fromARGB(255, 27, 130, 214)),
+            SizedBox(width:8),
+          
+         Text(
+          "Daily Challenge",
+           style: TextStyle(color:Color.fromARGB(255, 27, 130, 214), fontWeight: FontWeight.bold, fontSize:24),
+         ),
+          ],
+      ),),
+      backgroundColor: const Color.fromARGB(255, 231, 242, 253),
+      elevation: 0,
+      iconTheme: const IconThemeData(color: Colors.blue),
       ),
       body: BlocBuilder<ChallengeCubit, ChallengeState>(
         builder: (context, state) {
@@ -132,30 +148,79 @@ class _DailyChallengePageState extends State<DailyChallengePage> {
 
           if (state is ChallengeLoaded) {
             return Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(25),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    "🔥 Current Streak: ${state.streak.currentStreak}",
-                    style: const TextStyle(fontSize: 18),
+                  //streak container
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.only(top:16, bottom: 10, left:13, right:16),
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 253, 224, 142),
+                      borderRadius: BorderRadius.circular(25),
                   ),
-                  const SizedBox(height: 20),
-
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top:9),
+                        child: Text(
+                    "🔥 Current Streak",
+                    style: const TextStyle(fontSize: 18, fontWeight : FontWeight.bold, color: Color.fromARGB(255, 94, 46, 46), height: 1.0),
+                  
+                  ),),
+                
+                  Padding(
+                    padding: const EdgeInsets.only(left: 5),
+                    child:
                   Text(
-                    "${state.challenge.emoji} ${state.challenge.title}",
+                    "${state.streak.currentStreak} days",
+                    style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 94, 46, 46)),
+                  ),),
+                ],
+                  ),
+                  ),
+
+                  const SizedBox(height:20),
+
+                  Container(
+                    
+                    padding: const EdgeInsets.only(bottom:28, top:22, left:16, right:16),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.blue, width: 3),
+                      borderRadius: BorderRadius.circular(25),
+                      color: Colors.white,  
+                    
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+
+                        Text(
+                         
+                          "Category: ${state.challenge.categoryName}",
+                          style: const TextStyle(fontSize: 16, color: Colors.grey),
+                        ),
+                        const SizedBox(height: 4),
+                  Text(
+                    "${state.challenge.title}",
                     style: const TextStyle(
-                      fontSize: 20,
+                      fontSize: 19,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                 
 
-                  const SizedBox(height: 10),
-                  Text("Difficulty: ${state.challenge.difficulty}"),
-
-                  const SizedBox(height: 20),
-
-                  ElevatedButton(
+                  const SizedBox(height: 16),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: state.challenge.completed ? Colors.white : const Color.fromARGB(255, 73, 185, 131),
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                       
+                      ),
                     onPressed: state.challenge.completed
                         ? null
                         : () async {
@@ -169,7 +234,14 @@ class _DailyChallengePageState extends State<DailyChallengePage> {
                                   );
                             }
                           },
-                    child: const Text("Mark as Completed"),
+                    child: const Text("Mark as Completed",
+                     style: TextStyle(color: Colors.white, fontSize: 18),),
+                       
+
+                                
+                  ),),
+                ],
+              ),
                   ),
                 ],
               ),

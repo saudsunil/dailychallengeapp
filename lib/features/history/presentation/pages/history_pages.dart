@@ -46,11 +46,11 @@ class _HistoryPageState extends State<HistoryPage> {
           padding:const EdgeInsets.only(left: 9, top:10,),
         child:Row(
           children: const [
-            Icon(Icons.history, color: Colors.blue),
+            Icon(Icons.history, color:Color.fromARGB(255, 27, 130, 214)),
             SizedBox(width: 9),
             Text(
               "History",
-              style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold, fontSize:24,),
+              style: TextStyle(color:Color.fromARGB(255, 27, 130, 214), fontWeight: FontWeight.bold, fontSize:24,),
             ),
           ],
         ),
@@ -82,8 +82,9 @@ class _HistoryPageState extends State<HistoryPage> {
                   padding: const EdgeInsets.only(left: 8, top: 0, right: 8, bottom: 12),
 
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(25),
                     border: Border.all(color: borderColor, width: 3),
+                    color: Colors.white,
                   ),
                   child: Row(
                     children: [
