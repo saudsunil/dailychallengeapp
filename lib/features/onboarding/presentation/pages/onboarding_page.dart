@@ -12,138 +12,165 @@ class OnboardingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: BlocListener<OnboardingCubit, OnboardingState>(
-            listener: (context, state) {
-              if (state is OnboardingSuccess) {
-               Navigator.pushReplacement(
-  context,
-  MaterialPageRoute(
-    
-    builder: (_) => const HomePage(),
-  ),
-);
-              }
-            },
-            child: BlocBuilder<OnboardingCubit, OnboardingState>(
-            builder: (context, state) {
+  backgroundColor: const Color.fromARGB(255, 231, 242, 253),
 
-              // 🔵 Loading State
-              if (state is OnboardingLoading) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
+  appBar: AppBar(
+    backgroundColor: const Color.fromARGB(255, 231, 242, 253),
+     
+    elevation: 0,
+    iconTheme: const IconThemeData(color: Colors.blue),
+    title: Padding(
+      padding: const EdgeInsets.only(left: 9, top:10),
+      child:
+     Text(
+      "🎯 Pick Your Interests",
+      style: TextStyle(
+        color: Color.fromARGB(255, 27, 130, 214),
+        fontWeight: FontWeight.bold,
+        fontSize: 24,
+      
+      ),
+    ),
+  ),),
 
-              // 🔴 Error State
-              if (state is OnboardingError) {
-                return Center(
-                  child: Text(
-                    state.message,
-                    style: const TextStyle(color: Colors.red),
-                  ),
-                );
-              }
+  body: SafeArea(
+    child: Padding(
+     padding: const EdgeInsets.fromLTRB(23, 0, 23, 23),
+      child: BlocListener<OnboardingCubit, OnboardingState>(
+        listener: (context, state) {
+          if (state is OnboardingSuccess) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (_) => const HomePage(),
+              ),
+            );
+          }
+        },
+        child: BlocBuilder<OnboardingCubit, OnboardingState>(
+          builder: (context, state) {
 
-              // 🟢 Loaded State
-              if (state is OnboardingLoaded) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 30),
+            if (state is OnboardingLoading) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-                    const Text(
-                      "🎯 Pick Your Interests",
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.blue,
-                      ),
+            if (state is OnboardingError) {
+              return Center(
+                child: Text(
+                  state.message,
+                  style: const TextStyle(color: Colors.red),
+                ),
+              );
+            }
+
+            if (state is OnboardingLoaded) {
+
+              final borderColors = [
+                Colors.blue,
+                Colors.orange,
+                Colors.green,
+                Colors.red,
+              ];
+
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left:4, bottom:16 ),
+                   
+                 child: const Text(
+                    "Choose categories you like the most",
+                    style: TextStyle(color: Color.fromARGB(255, 77, 74, 74), fontSize: 16),
+                  ),),
+
+                  const SizedBox(height: 20),
+
+                  /// 🔵 GRID (Not Expanded anymore)
+                  GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: state.categories.length,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 16,
+                      crossAxisSpacing: 22,
+                      childAspectRatio: 1.9, // 👈 rectangular shape
                     ),
+                    itemBuilder: (context, index) {
 
-                    const SizedBox(height: 8),
+                      final category = state.categories[index];
+                      final isSelected =
+                          state.selectedIds.contains(category.id);
 
-                    const Text(
-                      "Choose categories you like",
-                      style: TextStyle(color: Colors.grey),
-                    ),
+                      final color =
+                          borderColors[index % borderColors.length];
 
-                    const SizedBox(height: 30),
+                      return GestureDetector(
+                        onTap: () => context
+                            .read<OnboardingCubit>()
+                            .toggleSelection(category.id),
 
-                    Expanded(
-                      child: GridView.builder(
-                        itemCount: state.categories.length,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisSpacing: 16,
-                          crossAxisSpacing: 16,
-                          childAspectRatio: 1.2,
-                        ),
-                        itemBuilder: (context, index) {
-                          final category = state.categories[index];
-
-                          final isSelected =
-                              state.selectedIds.contains(category.id);
-
-                          return GestureDetector(
-                            onTap: () => context
-                                .read<OnboardingCubit>()
-                                .toggleSelection(category.id),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: isSelected
-                                    ? Colors.blue.shade50
-                                    : Colors.white,
-                                borderRadius: BorderRadius.circular(16),
-                                border: Border.all(
-                                  color: isSelected
-                                      ? Colors.blue
-                                      : Colors.grey.shade300,
-                                  width: 2,
-                                ),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "${category.emoji} ${category.name}",
-                                  style: const TextStyle(fontSize: 16),
-                                ),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: isSelected
+                                ? color.withOpacity(0.15)
+                                : Colors.white,
+                            borderRadius: BorderRadius.circular(25),
+                            border: Border.all(
+                              color: isSelected
+                                  ? Colors.transparent
+                                  : color,
+                              width: 3,
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              "${category.emoji} ${category.name}",
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
-                          );
-                        },
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+
+                  const SizedBox(height: 30),
+
+                  /// 🟢 CONTINUE BUTTON (Just below grid)
+                  SizedBox(
+                    width: double.infinity,
+                    height: 55,
+                    child: ElevatedButton(
+                      onPressed: state.selectedIds.isEmpty
+                          ? null
+                          : () {
+                              context
+                                  .read<OnboardingCubit>()
+                                  .submit();
+                            },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color.fromARGB(255, 27, 130, 214),
+                      ),
+                      child: const Text(
+                        "Continue",
+                        style: TextStyle(fontSize: 18, color: Colors.white),
                       ),
                     ),
+                  ),
+                ],
+              );
+            }
 
-                    const SizedBox(height: 10),
-
-                    SizedBox(
-                      width: double.infinity,
-                      height: 55,
-                      child: ElevatedButton(
-                        onPressed: state.selectedIds.isEmpty
-                            ? null
-                            : () {
-                                context
-                                    .read<OnboardingCubit>()
-                                    .submit();
-                              },
-                        child: const Text("Continue"),
-                      ),
-                    ),
-                  ],
-                );
-              }
-
-              // ⚪ Default fallback
-              return const SizedBox();
-            },
-          ),
-        ),),
+            return const SizedBox();
+          },
+        ),
       ),
-    );      
+    ),
+  ),
+);  
   }
 }
