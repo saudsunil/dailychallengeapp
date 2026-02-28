@@ -119,7 +119,7 @@ class _HistoryPageState extends State<HistoryPage> {
                             Text(
                               "${item.categoryName} • $formattedDate",
                               style: const TextStyle(
-                                color: Colors.grey,
+                                color: Color.fromARGB(255, 77, 74, 74), 
                                 fontSize: 13,
                                 fontWeight: FontWeight.w800,
                               ),
