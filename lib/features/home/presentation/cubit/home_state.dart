@@ -9,5 +9,5 @@ class HomeInitial extends HomeState {
 }
 
 class HomeTabChanged extends HomeState {
-  const HomeTabChanged(int index) : super(index);
+  const HomeTabChanged(super.selectedIndex);
 }

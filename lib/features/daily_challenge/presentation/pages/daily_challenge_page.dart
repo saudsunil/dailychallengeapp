@@ -23,10 +23,12 @@ class _DailyChallengePageState extends State<DailyChallengePage> {
   }
 
   Future<void> loadUser() async {
+    
     final prefs = await SharedPreferences.getInstance();
     final userId = prefs.getString("user_id");
 
     if (userId != null) {
+      if (!mounted) return;
       context.read<ChallengeCubit>().loadChallenge(userId);
     }
   }
@@ -117,7 +119,7 @@ class _DailyChallengePageState extends State<DailyChallengePage> {
                         ),
                         const SizedBox(height: 4),
                   Text(
-                    "${state.challenge.title}",
+                    state.challenge.title,
                     style: const TextStyle(
                       fontSize: 19,
                       fontWeight: FontWeight.bold,
@@ -137,14 +139,13 @@ class _DailyChallengePageState extends State<DailyChallengePage> {
                     onPressed: state.challenge.completed
                         ? null
                         : () async {
+                          final cubit = context.read<ChallengeCubit>();
                             final prefs = await SharedPreferences.getInstance();
                             final userId = prefs.getString("user_id");
 
                             if (userId != null) {
-                              context.read<ChallengeCubit>().complete(
-                                    userId,
-                                    state.challenge.id,
-                                  );
+                              if (!mounted) return;
+                              cubit.complete(userId, state.challenge.id);
                             }
                           },
                     child: const Text("Mark as Completed",

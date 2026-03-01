@@ -114,7 +114,7 @@ class OnboardingPage extends StatelessWidget {
                         child: Container(
                           decoration: BoxDecoration(
                             color: isSelected
-                                ? color.withOpacity(0.15)
+                                ? color.withAlpha((0.15 * 255).round())
                                 : Colors.white,
                             borderRadius: BorderRadius.circular(25),
                             border: Border.all(
