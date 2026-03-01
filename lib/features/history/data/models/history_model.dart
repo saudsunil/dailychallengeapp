@@ -2,18 +2,12 @@ import '../../domain/entities/history.dart';
 
 class HistoryModel extends History {
   HistoryModel({
-    required String title,
-    required String categoryName,
-    required String categoryEmoji,
-    required bool completed,
-    required DateTime date,
-  }) : super(
-          title: title,
-          categoryName: categoryName,
-          categoryEmoji: categoryEmoji,
-          completed: completed,
-          date: date,
-        );
+    required super.title,
+    required super.categoryName,
+    required super.categoryEmoji,
+    required super.completed,
+    required super.date,
+  });
 
   factory HistoryModel.fromJson(Map<String, dynamic> json) {
     return HistoryModel(
