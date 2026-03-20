@@ -8,7 +8,7 @@ import '../../domain/entities/streak.dart';
 class ChallengeRepositoryImpl implements ChallengeRepository {
   final ChallengeRemoteDataSourceImpl remote;
 
-  ChallengeRepositoryImpl(this.remote);
+  ChallengeRepositoryImpl(this.remote);   //dependency injection
 
   @override
   Future<Challenge> getTodayChallenge(String userId) async {

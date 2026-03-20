@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
-import "../models/category_model.dart";
+
 
 abstract class OnboardingRemoteDataSource{
-  Future<List<CategoryModel>> getCategories();
+  Future<List<dynamic>> getCategories();
   Future<String> savePreferences(List<int> ids);
 }
 
@@ -12,11 +12,10 @@ class OnboardingRemoteDataSourceImpl implements OnboardingRemoteDataSource{
   OnboardingRemoteDataSourceImpl(this.dio);
 
   @override
-  Future<List<CategoryModel>> getCategories() async {
+  Future<List<dynamic>> getCategories() async {
     final response = await dio.get("/categories");
-    final List data = response.data["categories"];
-
-    return data.map((json)=> CategoryModel.fromJson(json)).toList();
+    return response.data["categories"];
+   
   }
 
  @override

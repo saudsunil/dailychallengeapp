@@ -16,6 +16,7 @@ ChallengeCubit(
   this.getStreak,
   this.completeChallenge,
 ) : super(ChallengeInitial());
+
   Future<void> loadChallenge(String userId) async {
     emit(ChallengeLoading());
 

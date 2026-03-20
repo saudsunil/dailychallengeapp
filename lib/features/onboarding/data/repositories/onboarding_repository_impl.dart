@@ -1,6 +1,7 @@
 import '../../domain/entities/category.dart';
 import '../../domain/repositories/onboarding_repository.dart';
 import '../datasources/onboarding_remote_datasource.dart';
+import '../models/category_model.dart';
 
 
 class OnboardingRepositoryImpl implements OnboardingRepository {
@@ -9,8 +10,9 @@ class OnboardingRepositoryImpl implements OnboardingRepository {
   OnboardingRepositoryImpl(this.remoteDataSource);
 
   @override
-  Future<List<Category>> getCategories() {
-    return remoteDataSource.getCategories();
+  Future<List<Category>> getCategories() async {
+    final data = await remoteDataSource.getCategories();
+    return data.map((json) => CategoryModel.fromJson(json)).toList();
   }
 
   @override
