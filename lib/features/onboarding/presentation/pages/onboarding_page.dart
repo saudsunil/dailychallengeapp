@@ -107,9 +107,7 @@ class OnboardingPage extends StatelessWidget {
                           borderColors[index % borderColors.length];
 
                       return GestureDetector(
-                        onTap: () => context
-                            .read<OnboardingCubit>()
-                            .toggleSelection(category.id),
+                        onTap: () => context.read<OnboardingCubit>().toggleSelection(category.id),
 
                         child: Container(
                           decoration: BoxDecoration(
