@@ -6,7 +6,7 @@ import '../../domain/entities/challenge.dart';
 import '../../domain/entities/streak.dart';
 
 class ChallengeRepositoryImpl implements ChallengeRepository {
-  final ChallengeRemoteDataSourceImpl remote;
+  final ChallengeRemoteDataSource remote;
 
   ChallengeRepositoryImpl(this.remote);   //dependency injection
 

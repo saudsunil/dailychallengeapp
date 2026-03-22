@@ -4,66 +4,75 @@ import '../../domain/usecases/save_preferences.dart';
 import 'onboarding_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+
 class OnboardingCubit extends Cubit<OnboardingState> {
   final GetCategories getCategories;
   final SavePreferences savePreferences;
 
-  List<int> selectedIds = [];
+
 
   OnboardingCubit(
     this.getCategories,
     this.savePreferences,
-  ) : super(OnboardingInitial()) {
+  ) : super(const OnboardingState.initial()) {
     loadCategories();
   }
 
   void loadCategories() async {
     try {
-      emit(OnboardingLoading());
+      emit(const OnboardingState.loading());
 
       final categories = await getCategories();
 
-      emit(OnboardingLoaded(
+      emit(OnboardingState.loaded(
         categories: categories,
-        selectedIds: selectedIds,
+        selectedIds: [],
       ));
     } catch (e) {
-      emit(OnboardingError(e.toString()));
+      emit(OnboardingState.error(e.toString()));
     }
   }
+
 
   void toggleSelection(int id) {
-    if (selectedIds.contains(id)) {
-      selectedIds.remove(id);
+    state.maybeWhen(
+      loaded: (categories, selectedIds){
+        final updated = List<int>.from(selectedIds);
+
+    if (updated.contains(id)) {
+      updated.remove(id);
     } else {
-      selectedIds.add(id);
+      updated.add(id);
     }
 
-    if (state is OnboardingLoaded) {
-      final current = state as OnboardingLoaded;
 
-      emit(OnboardingLoaded(
-        categories: current.categories,
-        selectedIds: selectedIds,
-      ));
-    }
+    emit(OnboardingState.loaded(
+      categories: categories,
+      selectedIds: updated,
+    ));
+  },
+  orElse: () {},
+);
   }
-Future<void> submit() async {
-  if (state is OnboardingLoaded) {
-    final currentState = state as OnboardingLoaded;
 
-    emit(OnboardingLoading());
+Future<void> submit() async {
+ state.maybeWhen(
+  loaded: (_, selectedIds) async {
+    emit(const OnboardingState.loading());
 
     try {
-      final userId =
-          await savePreferences(currentState.selectedIds);
+      final userId = await savePreferences(selectedIds);
 
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString("user_id", userId);
 
-      emit(OnboardingSuccess()); // 🔥 important
+      emit(const OnboardingState.success());
     } catch (e) {
-      emit(OnboardingError(e.toString()));
+      emit(OnboardingState.error(e.toString()));
     }
-  }
-}}
+  },
+  orElse: () {},
+);
+}
+
+}

@@ -37,40 +37,43 @@ class OnboardingPage extends StatelessWidget {
     child: Padding(
      padding: const EdgeInsets.fromLTRB(23, 0, 23, 23),
       child: BlocListener<OnboardingCubit, OnboardingState>(
-        listener: (context, state) {
-          if (state is OnboardingSuccess) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (_) => const HomePage(),
-              ),
-            );
-          }
-        },
+listener: (context, state) {
+  state.maybeWhen(
+    success: () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const HomePage(),
+        ),
+      );
+    },
+    orElse: () {},
+  );
+},
         child: BlocBuilder<OnboardingCubit, OnboardingState>(
           builder: (context, state) {
+        return state.when(
+          initial:()=> const SizedBox(),
+          loading:()=> const Center(
+            child: CircularProgressIndicator( ),
+        ),
 
-            if (state is OnboardingLoading) {
-              return const Center(child: CircularProgressIndicator());
-            }
-
-            if (state is OnboardingError) {
-              return Center(
-                child: Text(
-                  state.message,
-                  style: const TextStyle(color: Colors.red),
-                ),
-              );
-            }
-
-            if (state is OnboardingLoaded) {
-
-              final borderColors = [
-                Colors.blue,
-                Colors.orange,
-                Colors.green,
-                Colors.red,
-              ];
+        error:(message)=> Center(
+          child: Text(
+            message,
+            style: const TextStyle(color: Colors.red),
+          ),
+        ),
+        success: ()=> const SizedBox(),
+        loaded: (categories, selectedIds) {
+          final borderColors = [
+            Colors.blue,
+            Colors.orange,
+            Colors.green,
+            Colors.red,
+         
+          ];
+        
 
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,7 +92,7 @@ class OnboardingPage extends StatelessWidget {
                   GridView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: state.categories.length,
+                    itemCount: categories.length,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
@@ -99,9 +102,9 @@ class OnboardingPage extends StatelessWidget {
                     ),
                     itemBuilder: (context, index) {
 
-                      final category = state.categories[index];
+                      final category = categories[index];
                       final isSelected =
-                          state.selectedIds.contains(category.id);
+                          selectedIds.contains(category.id);
 
                       final color =
                           borderColors[index % borderColors.length];
@@ -143,7 +146,7 @@ class OnboardingPage extends StatelessWidget {
                     width: double.infinity,
                     height: 55,
                     child: ElevatedButton(
-                      onPressed: state.selectedIds.isEmpty
+                      onPressed: selectedIds.isEmpty
                           ? null
                           : () {
                               context
@@ -161,9 +164,9 @@ class OnboardingPage extends StatelessWidget {
                   ),
                 ],
               );
-            }
+            },
+          );
 
-            return const SizedBox();
           },
         ),
       ),

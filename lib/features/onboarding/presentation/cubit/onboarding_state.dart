@@ -1,23 +1,20 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
 import '../../domain/entities/category.dart';
 
-abstract class OnboardingState {}
+part 'onboarding_state.freezed.dart';
 
-class OnboardingInitial extends OnboardingState {}
+@freezed
+class OnboardingState with _$OnboardingState {
+  const factory OnboardingState.initial() = _Initial;
 
-class OnboardingLoading extends OnboardingState {}
+  const factory OnboardingState.loading() = _Loading;
 
-class OnboardingLoaded extends OnboardingState {
-  final List<Category> categories;
-  final List<int> selectedIds;
+  const factory OnboardingState.loaded({
+    required List<Category> categories,
+    required List<int> selectedIds,
+  }) = _Loaded;
 
-  OnboardingLoaded({
-    required this.categories,
-    required this.selectedIds,
-  });
-}
-class OnboardingSuccess extends OnboardingState {}
-class OnboardingError extends OnboardingState {
-  final String message;
+  const factory OnboardingState.error(String message) = _Error;
 
-  OnboardingError(this.message);
+  const factory OnboardingState.success() = _Success;
 }
