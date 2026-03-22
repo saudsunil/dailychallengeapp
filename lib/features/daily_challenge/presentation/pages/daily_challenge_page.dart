@@ -57,11 +57,14 @@ class _DailyChallengePageState extends State<DailyChallengePage> {
       ),
       body: BlocBuilder<ChallengeCubit, ChallengeState>(
         builder: (context, state) {
-          if (state is ChallengeLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
+          return state.when( 
+                initial: ()=> const SizedBox(),
 
-          if (state is ChallengeLoaded) {
+                loading: ()=> const Center(child: CircularProgressIndicator(),),
+
+                error: (message)=> Center(child: Text(message),),
+
+         loaded: (challenge, streak){
             return Padding(
               padding: const EdgeInsets.all(25),
               child: Column(
@@ -90,7 +93,7 @@ class _DailyChallengePageState extends State<DailyChallengePage> {
                     padding: const EdgeInsets.only(left: 5),
                     child:
                   Text(
-                    "${state.streak.currentStreak} days",
+                    "${streak.currentStreak} days",
                     style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 94, 46, 46)),
                   ),),
                 ],
@@ -114,12 +117,12 @@ class _DailyChallengePageState extends State<DailyChallengePage> {
 
                         Text(
                          
-                          "Category: ${state.challenge.categoryName}",
+                          "Category: ${challenge.categoryName}",
                           style: const TextStyle(fontSize: 16, color: Color.fromARGB(255, 77, 74, 74), ),
                         ),
                         const SizedBox(height: 4),
                   Text(
-                    state.challenge.title,
+                    challenge.title,
                     style: const TextStyle(
                       fontSize: 19,
                       fontWeight: FontWeight.bold,
@@ -132,11 +135,11 @@ class _DailyChallengePageState extends State<DailyChallengePage> {
                     width: double.infinity,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: state.challenge.completed ? Colors.white : const Color.fromARGB(255, 73, 185, 131),
+                        backgroundColor: challenge.completed ? Colors.white : const Color.fromARGB(255, 73, 185, 131),
                         padding: const EdgeInsets.symmetric(vertical: 16),
                        
                       ),
-                    onPressed: state.challenge.completed
+                    onPressed: challenge.completed
                         ? null
                         : () async {
                           final cubit = context.read<ChallengeCubit>();
@@ -145,7 +148,7 @@ class _DailyChallengePageState extends State<DailyChallengePage> {
 
                             if (userId != null) {
                               if (!mounted) return;
-                              cubit.complete(userId, state.challenge.id);
+                              cubit.complete(userId, challenge.id);
                             }
                           },
                     child: const Text("Mark as Completed",
@@ -160,13 +163,9 @@ class _DailyChallengePageState extends State<DailyChallengePage> {
                 ],
               ),
             );
-          }
+          },
 
-          if (state is ChallengeError) {
-            return Center(child: Text(state.message));
-          }
-
-          return const SizedBox();
+          );
         },
       ),
      

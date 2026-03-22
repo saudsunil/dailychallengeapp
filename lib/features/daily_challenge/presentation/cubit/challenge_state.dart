@@ -1,24 +1,21 @@
+import 'package:flutter/material.dart';
+
 import '../../domain/entities/challenge.dart';
 import '../../domain/entities/streak.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-abstract class ChallengeState {}
+part 'challenge_state.freezed.dart';
 
-class ChallengeInitial extends ChallengeState {}
+@freezed
+class ChallengeState with _$ChallengeState{
+   const factory ChallengeState.initial()= _Initial;
 
-class ChallengeLoading extends ChallengeState {}
+   const factory ChallengeState.loading()= _Loading;
 
-class ChallengeLoaded extends ChallengeState {
-  final Challenge challenge;
-  final Streak streak;
+   const factory ChallengeState.loaded({
+     required Challenge challenge,
+     required Streak streak,
+   })= _Loaded;
 
-  ChallengeLoaded({
-    required this.challenge,
-    required this.streak,
-  });
-}
-
-class ChallengeError extends ChallengeState {
-  final String message;
-
-  ChallengeError(this.message);
+   const factory ChallengeState.error(String message)= _Error;
 }

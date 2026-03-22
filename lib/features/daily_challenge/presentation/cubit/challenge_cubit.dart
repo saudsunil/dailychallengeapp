@@ -15,21 +15,21 @@ ChallengeCubit(
   this.getTodayChallenge,
   this.getStreak,
   this.completeChallenge,
-) : super(ChallengeInitial());
+) : super(const ChallengeState.initial());
 
   Future<void> loadChallenge(String userId) async {
-    emit(ChallengeLoading());
+    emit(const ChallengeState.loading());
 
     try {
       final challenge = await getTodayChallenge(userId);
       final streak = await getStreak(userId);
 
-      emit(ChallengeLoaded(
+      emit(ChallengeState.loaded(
         challenge: challenge,
         streak: streak,
       ));
     } catch (e) {
-      emit(ChallengeError(e.toString()));
+      emit(ChallengeState.error(e.toString()));
     }
   }
 
