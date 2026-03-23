@@ -1,3 +1,6 @@
+
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -58,23 +61,31 @@ class _HistoryPageState extends State<HistoryPage> {
       ),),
       body: BlocBuilder<HistoryCubit, HistoryState>(
         builder: (context, state) {
-          if (state is HistoryLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
+         return state.when(
+          initial: ()=> const SizedBox(),
 
-          if (state is HistoryLoaded) {
+          loading: ()=> const Center(
+            child: CircularProgressIndicator(),
+          ),
+          error: (message)=> Center(
+            child:Text(message),
+          ),
+
+          loaded: (history){
+
+          
 
             return GridView.builder(
               
               padding: const EdgeInsets.all(25),
-              itemCount: state.history.length,
+              itemCount: history.length,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 1,
                 mainAxisSpacing: 14,
                 childAspectRatio: 4.3,
               ),
               itemBuilder: (context, index) {
-                final item = state.history[index];
+                final item = history[index];
                 final borderColor = borderColors[index % borderColors.length];
                 final formattedDate =
                     DateFormat('EEE, MMM d').format(item.date);
@@ -133,13 +144,10 @@ class _HistoryPageState extends State<HistoryPage> {
                 );
               },
             );
+          
           }
 
-          if (state is HistoryError) {
-            return Center(child: Text(state.message));
-          }
-
-          return const SizedBox();
+         );
         },
       ),
     );

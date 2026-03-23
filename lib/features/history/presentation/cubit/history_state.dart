@@ -1,16 +1,29 @@
 import '../../domain/entities/history.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-abstract class HistoryState{}
+part 'history_state.freezed.dart';
 
-class HistoryInitial extends HistoryState{}
-class HistoryLoading extends HistoryState{}
-class HistoryLoaded extends HistoryState{
-  final List<History> history;
 
-  HistoryLoaded(this.history);
+@freezed
+class HistoryState with _$HistoryState {
+  const factory HistoryState.initial()= _Initial;
+
+  const factory HistoryState.loading()= _Loading;
+
+  const factory HistoryState.loaded({
+    required List<History> history,
+  })= _Loaded;
+
+  const factory HistoryState.error(String message)= _Error;
 }
-class HistoryError extends HistoryState{
-  final String message;
 
-  HistoryError(this.message);
-}
+ 
+
+
+
+
+
+
+
+
+

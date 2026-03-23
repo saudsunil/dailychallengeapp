@@ -5,17 +5,18 @@ import 'history_state.dart';
 class HistoryCubit extends Cubit<HistoryState> {
   final GetHistory getHistory;
 
-  HistoryCubit(this.getHistory) : super(HistoryInitial());
+  HistoryCubit(this.getHistory) : super(const HistoryState.initial());
 
 Future<void> loadHistory(String userId) async {
-  emit(HistoryLoading());
-
   try{
+  emit(const HistoryState.loading());
+
+
     final history = await getHistory(userId);
-    emit(HistoryLoaded(history));
+    emit(HistoryState.loaded(history: history));
 
   }
   catch(e){
-    emit(HistoryError(e.toString()));
+    emit(HistoryState.error(e.toString()));
   }
 }}
