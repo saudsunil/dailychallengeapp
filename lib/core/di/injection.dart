@@ -25,6 +25,13 @@ import '../../features/history/domain/repositories/history_repository.dart';
 import '../../features/history/domain/usecases/get_history.dart';
 import '../../features/history/presentation/cubit/history_cubit.dart';
 
+//feedback
+import '../../features/feedback/data/datasources/feedback_remote_datasource.dart';
+import '../../features/feedback/data/repositories/feedback_repository_impl.dart';
+import '../../features/feedback/domain/repositories/feedback_repository.dart';
+import '../../features/feedback/domain/usecases/submit_feedback.dart';
+import '../../features/feedback/presentation/cubit/feedback_cubit.dart';
+
 final sl = GetIt.instance;
 
 Future<void> init() async {
@@ -103,4 +110,21 @@ sl.registerFactory(
     sl(),
   ),
 );
+//=======================feedback=========================//
+// DATASOURCE
+sl.registerLazySingleton<FeedbackRemoteDataSource>(
+  () => FeedbackRemoteDataSourceImpl(sl()),
+);
+
+// REPOSITORY
+sl.registerLazySingleton<FeedbackRepository>(
+  () => FeedbackRepositoryImpl(sl()),
+);
+
+// USECASE
+sl.registerLazySingleton(() => SubmitFeedback(sl()));
+
+// CUBIT
+sl.registerFactory(() => FeedbackCubit(sl()));
+
 }

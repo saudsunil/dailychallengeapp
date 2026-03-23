@@ -6,6 +6,7 @@ import 'features/onboarding/presentation/pages/onboarding_page.dart';
 import 'features/onboarding/presentation/cubit/onboarding_cubit.dart';
 import 'features/daily_challenge/presentation/cubit/challenge_cubit.dart';
 import 'features/history/presentation/cubit/history_cubit.dart';
+import 'features/feedback/presentation/cubit/feedback_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,6 +31,9 @@ class MyApp extends StatelessWidget {
         ),      
         BlocProvider(
           create: (_) => sl<HistoryCubit>(),
+        ),
+        BlocProvider(
+          create: (_)=> sl<FeedbackCubit>(),
         ),
       ],
       child: const MaterialApp(

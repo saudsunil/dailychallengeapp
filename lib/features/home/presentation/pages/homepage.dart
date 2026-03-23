@@ -5,6 +5,7 @@ import '../cubit/home_state.dart';
 
 import '../../../daily_challenge/presentation/pages/daily_challenge_page.dart';
 import '../../../history/presentation/pages/history_pages.dart';
+import '../../../feedback/presentation/pages/feedback_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -28,6 +29,7 @@ class _HomeView extends StatelessWidget {
   final _pages = const [
     DailyChallengePage(),
     HistoryPage(),
+    FeedbackPage(),
   ];
 
     return BlocBuilder<HomeCubit, HomeState>(
@@ -48,6 +50,7 @@ class _HomeView extends StatelessWidget {
               children: [
                 _buildNavItem(context,  "Home", 0, selectedIndex),
                 _buildNavItem(context, "History", 1, selectedIndex),
+                _buildNavItem(context,"Feedback", 2, selectedIndex ),
               ],
             ),
           ),
