@@ -1,13 +1,16 @@
-abstract class HomeState{
-  final int selectedIndex;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  const HomeState(this.selectedIndex);
+part 'home_state.freezed.dart';
+
+@freezed
+
+class HomeState with _$HomeState{
+  const factory HomeState({
+    required int selectedIndex,
+  }) = _HomeState;
+
+
+
 }
 
-class HomeInitial extends HomeState {
-  const HomeInitial(): super(0);
-}
 
-class HomeTabChanged extends HomeState {
-  const HomeTabChanged(super.selectedIndex);
-}

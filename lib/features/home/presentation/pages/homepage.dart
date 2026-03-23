@@ -21,19 +21,24 @@ class HomePage extends StatelessWidget {
 class _HomeView extends StatelessWidget {
   const _HomeView();
 
-  final List<Widget> _pages = const [
+
+  @override
+  Widget build(BuildContext context) {
+    
+  final _pages = const [
     DailyChallengePage(),
     HistoryPage(),
   ];
 
-  @override
-  Widget build(BuildContext context) {
     return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, state) {
         final selectedIndex = state.selectedIndex;
 
         return Scaffold(
-          body: _pages[selectedIndex],
+          body: IndexedStack(
+            index: selectedIndex,
+            children: _pages,
+          ),
 
           bottomNavigationBar: Container(
             padding: const EdgeInsets.symmetric(vertical: 10),
@@ -66,7 +71,7 @@ class _HomeView extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         decoration: BoxDecoration(
           color: isSelected
-              ? Color.fromARGB(255, 27, 130, 214)
+              ? const Color.fromARGB(255, 27, 130, 214)
               : Colors.grey[200],
           borderRadius: BorderRadius.circular(30),
         ),
