@@ -1,8 +1,9 @@
 import 'package:dio/dio.dart';
 import '../models/feedback_model.dart';
+import '../models/feedback_response_model.dart';
 
 abstract class FeedbackRemoteDataSource{
-  Future<Map<String, dynamic>> submitFeedback(FeedbackModel model);
+  Future<FeedbackResponseModel> submitFeedback(FeedbackModel model);
 }
 
 class FeedbackRemoteDataSourceImpl implements FeedbackRemoteDataSource{
@@ -11,13 +12,17 @@ class FeedbackRemoteDataSourceImpl implements FeedbackRemoteDataSource{
   FeedbackRemoteDataSourceImpl(this.dio);
 
   @override
-  Future<Map<String,dynamic>> submitFeedback(FeedbackModel model) async{
+  Future<FeedbackResponseModel> submitFeedback(FeedbackModel model) async{
    final response= await dio.post(
       "/feedback",
       data: model.toJson(),
    
     );
-    return response.data;
+    if (response.statusCode == 200 || response.statusCode == 201){
+      return FeedbackResponseModel.fromJson(response.data);
+    }else{
+      throw Exception("Failed to submit feedback");
+    }
 
     
   }

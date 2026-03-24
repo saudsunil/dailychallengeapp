@@ -29,11 +29,7 @@ class FeedbackCubit extends Cubit<FeedbackState>{
 
       final response =  await submitFeedback(feedback);
   
-    if (response["status"]== "success"){
-      emit(FeedbackState.success(response["message"]));
-    } else {
-      emit(FeedbackState.error(response["message"]));
-    }
+       emit(FeedbackState.success(response.message));
        } catch (e) {
         emit(FeedbackState.error(e.toString()));
        }
