@@ -26,11 +26,17 @@ class FeedbackCubit extends Cubit<FeedbackState>{
         description: description,
         userId: userId,
       );
-      await submitFeedback(feedback);
 
-      emit(const FeedbackState.success());
-    } catch(e){
-      emit(FeedbackState.error(e.toString()));
+      final response =  await submitFeedback(feedback);
+  
+    if (response["status"]== "success"){
+      emit(FeedbackState.success(response["message"]));
+    } else {
+      emit(FeedbackState.error(response["message"]));
     }
+       } catch (e) {
+        emit(FeedbackState.error(e.toString()));
+       }
+     
   }
 }

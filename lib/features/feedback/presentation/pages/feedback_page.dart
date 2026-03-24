@@ -20,7 +20,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-            backgroundColor: const Color.fromARGB(255, 231, 242, 253),
+      backgroundColor: const Color.fromARGB(255, 231, 242, 253),
       appBar: AppBar(
       backgroundColor: const Color.fromARGB(255, 231, 242, 253),
       elevation: 0,
@@ -46,13 +46,12 @@ class _FeedbackPageState extends State<FeedbackPage> {
       
 
         child:BlocListener<FeedbackCubit, FeedbackState>(
-       listener: (context, state) {
+      listener: (context, state) {
   state.maybeWhen(
-    success: () {
+    success: (message) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text(
-            "Feedback Submitted",
+          content: Text(message,
             textAlign: TextAlign.center,
           ),
           behavior: SnackBarBehavior.floating,
@@ -136,8 +135,8 @@ class _FeedbackPageState extends State<FeedbackPage> {
             SizedBox(
               height: 55,
               child: TextField(
-               controller: descriptionController,
-         decoration: InputDecoration(
+              controller: descriptionController,
+        decoration: InputDecoration(
       labelText: "Description",
     
       border: OutlineInputBorder(
@@ -158,7 +157,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
 
               const SizedBox(height: 40),
               SizedBox(
-               width: double.infinity,
+              width: double.infinity,
               child:ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromARGB(255, 73, 185, 131),
@@ -168,36 +167,36 @@ class _FeedbackPageState extends State<FeedbackPage> {
                 ),
 
               onPressed: () async {
-  final title = titleController.text.trim();
-  final desc = descriptionController.text.trim();
+              final title = titleController.text.trim();
+              final desc = descriptionController.text.trim();
 
-  if (title.isEmpty || desc.isEmpty) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Fill above contents")),
-    );
-    return;
-  }
+              if (title.isEmpty || desc.isEmpty) {
+            ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Fill above contents")),
+            );
+            return;
+              }
 
-  final prefs = await SharedPreferences.getInstance();
-  final userId = prefs.getString("user_id");
+              final prefs = await SharedPreferences.getInstance();
+              final userId = prefs.getString("user_id");
 
-  if (userId != null) {
-    context.read<FeedbackCubit>().submit(
-      title: title,
-      satisfaction: satisfaction,
-      description: desc,
-      userId: userId,
-    );
-  }
-},
+              if (userId != null) {
+              context.read<FeedbackCubit>().submit(
+                title: title,
+                satisfaction: satisfaction,
+                description: desc,
+                userId: userId,
+                );
+                }
+                },
                 child: const Text("Submit",
                 style: TextStyle(color: Colors.white, fontSize:18 ),
-                 ),
+                ),
               ),
           ),],
           ),
         ),
       ),
-       ), );
+      ), );
   }
 }

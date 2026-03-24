@@ -10,13 +10,13 @@ class FeedbackRepositoryImpl implements FeedbackRepository{
   FeedbackRepositoryImpl(this.remote);
 
   @override
-  Future<void> submitFeedback(Feedback feedback) async{
+  Future<Map<String, dynamic>> submitFeedback(Feedback feedback) async{
     final model= FeedbackModel(
       title: feedback.title,
       satisfaction: feedback.satisfaction,
       description: feedback.description,
       userId: feedback.userId,
     );
-    await remote.submitFeedback(model);
+    return await remote.submitFeedback(model);
   }
 }

@@ -7,7 +7,7 @@ class SubmitFeedback{
 
   SubmitFeedback(this.repository);
 
-  Future<void> call(Feedback feedback){
-    return repository.submitFeedback( feedback);
+  Future<Map<String, dynamic>> call(Feedback feedback){
+    return repository.submitFeedback(feedback);
   }
 }
