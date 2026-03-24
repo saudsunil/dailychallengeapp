@@ -14,7 +14,7 @@ class FeedbackModel{
 
 Map<String, dynamic> toJson(){
   return{
-    "titlle": title,
+    "title": title,
     "satisfaction": satisfaction,
     "description": description,
     "user_id": userId,
