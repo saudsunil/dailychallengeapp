@@ -6,6 +6,6 @@ part 'feedback_state.freezed.dart';
 class FeedbackState with _$FeedbackState{
   const factory FeedbackState.initial()= _Initial;
   const factory FeedbackState.loading()= _Loading;
-  const factory FeedbackState.success()= _Success;
+  const factory FeedbackState.success(String message)= _Success;
   const factory FeedbackState.error(String message)= _Error;
 }
