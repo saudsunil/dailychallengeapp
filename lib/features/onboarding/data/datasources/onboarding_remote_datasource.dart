@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 
 
 abstract class OnboardingRemoteDataSource{
-  Future<List<dynamic>> getCategories();
+  Future<List<dynamic>> getCategories();    
   Future<String> savePreferences(List<int> ids);
 }
 
